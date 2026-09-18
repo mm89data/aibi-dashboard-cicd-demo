@@ -1,6 +1,109 @@
 {
   "datasets": [
     {
+      "name": "region",
+      "displayName": "Regions",
+      "config": {
+        "version": "1.1",
+        "source": "samples.tpch.region",
+        "dimensions": [
+          {
+            "name": "r_regionkey",
+            "expr": "r_regionkey",
+            "comment": "Primary key"
+          },
+          {
+            "name": "r_name",
+            "expr": "r_name",
+            "displayName": "Region"
+          }
+        ]
+      }
+    },
+    {
+      "name": "customer",
+      "displayName": "Customers",
+      "config": {
+        "version": "1.1",
+        "source": "samples.tpch.customer",
+        "dimensions": [
+          {
+            "name": "c_custkey",
+            "expr": "c_custkey",
+            "comment": "Primary key"
+          },
+          {
+            "name": "c_nationkey",
+            "expr": "c_nationkey",
+            "comment": "Nation key (FK to nation)"
+          },
+          {
+            "name": "c_name",
+            "expr": "c_name",
+            "displayName": "Customer Name"
+          },
+          {
+            "name": "c_mktsegment",
+            "expr": "c_mktsegment",
+            "displayName": "Market Segment"
+          },
+          {
+            "name": "c_acctbal",
+            "expr": "c_acctbal",
+            "displayName": "Account Balance",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "customer_count",
+            "expr": "COUNT(DISTINCT c_custkey)",
+            "displayName": "Customer Count",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            }
+          },
+          {
+            "name": "avg_acctbal",
+            "expr": "AVG(c_acctbal)",
+            "displayName": "Avg Account Balance",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "total_acctbal",
+            "expr": "SUM(c_acctbal)",
+            "displayName": "Total Account Balance",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "nation",
       "displayName": "Nations",
       "config": {
@@ -26,6 +129,202 @@
       }
     },
     {
+      "name": "orders",
+      "displayName": "Orders",
+      "config": {
+        "version": "1.1",
+        "source": "samples.tpch.orders",
+        "dimensions": [
+          {
+            "name": "o_orderkey",
+            "expr": "o_orderkey",
+            "comment": "Primary key"
+          },
+          {
+            "name": "o_custkey",
+            "expr": "o_custkey",
+            "comment": "Customer key (FK to customer)"
+          },
+          {
+            "name": "o_orderstatus",
+            "expr": "o_orderstatus",
+            "displayName": "Order Status",
+            "comment": "F=Fulfilled, O=Open, P=Partial"
+          },
+          {
+            "name": "o_orderdate",
+            "expr": "o_orderdate",
+            "displayName": "Order Date",
+            "format": {
+              "type": "date",
+              "dateFormat": "year_month_day"
+            }
+          },
+          {
+            "name": "o_orderpriority",
+            "expr": "o_orderpriority",
+            "displayName": "Order Priority"
+          },
+          {
+            "name": "o_clerk",
+            "expr": "o_clerk",
+            "displayName": "Clerk"
+          },
+          {
+            "name": "order_year",
+            "expr": "YEAR(o_orderdate)",
+            "displayName": "Order Year"
+          },
+          {
+            "name": "order_month",
+            "expr": "DATE_TRUNC('MONTH', o_orderdate)",
+            "displayName": "Order Month",
+            "format": {
+              "type": "date",
+              "dateFormat": "locale_short_month"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "order_count",
+            "expr": "COUNT(1)",
+            "displayName": "Order Count",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            }
+          },
+          {
+            "name": "total_order_value",
+            "expr": "SUM(o_totalprice)",
+            "displayName": "Total Order Value",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "avg_order_value",
+            "expr": "SUM(o_totalprice) / COUNT(1)",
+            "displayName": "Avg Order Value",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "supplier",
+      "displayName": "Suppliers",
+      "config": {
+        "source": "samples.tpch.supplier",
+        "measures": [
+          {
+            "name": "supplier_count",
+            "expr": "COUNT(DISTINCT s_suppkey)",
+            "displayName": "Supplier Count",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            }
+          },
+          {
+            "name": "avg_supplier_acctbal",
+            "expr": "AVG(s_acctbal)",
+            "displayName": "Avg Supplier Balance",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ],
+        "version": "1.1",
+        "dimensions": [
+          {
+            "name": "s_suppkey",
+            "expr": "s_suppkey",
+            "comment": "Primary key"
+          },
+          {
+            "name": "s_name",
+            "expr": "s_name",
+            "displayName": "Supplier Name"
+          },
+          {
+            "name": "s_nationkey",
+            "expr": "s_nationkey",
+            "comment": "Nation key"
+          },
+          {
+            "name": "s_acctbal",
+            "expr": "s_acctbal",
+            "displayName": "Supplier Account Balance",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "supplier_nation",
+            "expr": "nation.n_name",
+            "displayName": "Supplier Nation"
+          },
+          {
+            "name": "supplier_region",
+            "expr": "nation.region.r_name",
+            "displayName": "Supplier Region"
+          }
+        ],
+        "joins": [
+          {
+            "name": "nation",
+            "source": "samples.tpch.nation",
+            "cardinality": "many_to_one",
+            "on": "source.s_nationkey = nation.n_nationkey",
+            "joins": [
+              {
+                "name": "region",
+                "source": "samples.tpch.region",
+                "cardinality": "many_to_one",
+                "on": "nation.n_regionkey = region.r_regionkey",
+                "rely": {
+                  "atMostOneMatch": true
+                }
+              }
+            ],
+            "rely": {
+              "atMostOneMatch": true
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "lineitem",
       "displayName": "Line Items",
       "config": {
@@ -43,14 +342,13 @@
             "comment": "Supplier key (FK to supplier)"
           },
           {
+            "name": "l_shipdate",
+            "expr": "l_shipdate",
             "displayName": "Ship Date",
             "format": {
               "type": "date",
               "dateFormat": "year_month_day"
-            },
-            "name": "l_shipdate",
-            "expr": "l_shipdate",
-            "comment": "Date the line item was shipped"
+            }
           },
           {
             "name": "l_commitdate",
@@ -192,318 +490,11 @@
           }
         ]
       }
-    },
-    {
-      "name": "region",
-      "displayName": "Regions",
-      "config": {
-        "version": "1.1",
-        "source": "samples.tpch.region",
-        "dimensions": [
-          {
-            "name": "r_regionkey",
-            "expr": "r_regionkey",
-            "comment": "Primary key"
-          },
-          {
-            "name": "r_name",
-            "expr": "r_name",
-            "displayName": "Region"
-          }
-        ]
-      }
-    },
-    {
-      "name": "customer",
-      "displayName": "Customers",
-      "config": {
-        "version": "1.1",
-        "source": "samples.tpch.customer",
-        "dimensions": [
-          {
-            "name": "c_custkey",
-            "expr": "c_custkey",
-            "comment": "Primary key"
-          },
-          {
-            "name": "c_nationkey",
-            "expr": "c_nationkey",
-            "comment": "Nation key (FK to nation)"
-          },
-          {
-            "name": "c_name",
-            "expr": "c_name",
-            "displayName": "Customer Name"
-          },
-          {
-            "name": "c_mktsegment",
-            "expr": "c_mktsegment",
-            "displayName": "Market Segment"
-          },
-          {
-            "name": "c_acctbal",
-            "expr": "c_acctbal",
-            "displayName": "Account Balance",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          }
-        ],
-        "measures": [
-          {
-            "name": "customer_count",
-            "expr": "COUNT(DISTINCT c_custkey)",
-            "displayName": "Customer Count",
-            "format": {
-              "type": "number",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 0.0
-              }
-            }
-          },
-          {
-            "name": "avg_acctbal",
-            "expr": "AVG(c_acctbal)",
-            "displayName": "Avg Account Balance",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          },
-          {
-            "name": "total_acctbal",
-            "expr": "SUM(c_acctbal)",
-            "displayName": "Total Account Balance",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "supplier",
-      "displayName": "Suppliers",
-      "config": {
-        "source": "samples.tpch.supplier",
-        "measures": [
-          {
-            "name": "supplier_count",
-            "expr": "COUNT(DISTINCT s_suppkey)",
-            "displayName": "Supplier Count",
-            "format": {
-              "type": "number",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 0.0
-              }
-            }
-          },
-          {
-            "name": "avg_supplier_acctbal",
-            "expr": "AVG(s_acctbal)",
-            "displayName": "Avg Supplier Balance",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          }
-        ],
-        "version": "1.1",
-        "dimensions": [
-          {
-            "name": "s_suppkey",
-            "expr": "s_suppkey",
-            "comment": "Primary key"
-          },
-          {
-            "name": "s_name",
-            "expr": "s_name",
-            "displayName": "Supplier Name"
-          },
-          {
-            "name": "s_nationkey",
-            "expr": "s_nationkey",
-            "comment": "Nation key"
-          },
-          {
-            "name": "s_acctbal",
-            "expr": "s_acctbal",
-            "displayName": "Supplier Account Balance",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          },
-          {
-            "name": "supplier_nation",
-            "expr": "nation.n_name",
-            "displayName": "Supplier Nation"
-          },
-          {
-            "name": "supplier_region",
-            "expr": "nation.region.r_name",
-            "displayName": "Supplier Region"
-          }
-        ],
-        "joins": [
-          {
-            "name": "nation",
-            "source": "samples.tpch.nation",
-            "cardinality": "many_to_one",
-            "on": "source.s_nationkey = nation.n_nationkey",
-            "joins": [
-              {
-                "name": "region",
-                "source": "samples.tpch.region",
-                "cardinality": "many_to_one",
-                "on": "nation.n_regionkey = region.r_regionkey",
-                "rely": {
-                  "atMostOneMatch": true
-                }
-              }
-            ],
-            "rely": {
-              "atMostOneMatch": true
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "orders",
-      "displayName": "Orders",
-      "config": {
-        "version": "1.1",
-        "source": "samples.tpch.orders",
-        "dimensions": [
-          {
-            "name": "o_orderkey",
-            "expr": "o_orderkey",
-            "comment": "Primary key"
-          },
-          {
-            "name": "o_custkey",
-            "expr": "o_custkey",
-            "comment": "Customer key (FK to customer)"
-          },
-          {
-            "name": "o_orderstatus",
-            "expr": "o_orderstatus",
-            "displayName": "Order Status",
-            "comment": "F=Fulfilled, O=Open, P=Partial"
-          },
-          {
-            "name": "o_orderdate",
-            "expr": "o_orderdate",
-            "displayName": "Order Date",
-            "format": {
-              "type": "date",
-              "dateFormat": "year_month_day"
-            }
-          },
-          {
-            "name": "o_orderpriority",
-            "expr": "o_orderpriority",
-            "displayName": "Order Priority"
-          },
-          {
-            "name": "o_clerk",
-            "expr": "o_clerk",
-            "displayName": "Clerk"
-          },
-          {
-            "name": "order_year",
-            "expr": "YEAR(o_orderdate)",
-            "displayName": "Order Year"
-          },
-          {
-            "name": "order_month",
-            "expr": "DATE_TRUNC('MONTH', o_orderdate)",
-            "displayName": "Order Month",
-            "format": {
-              "type": "date",
-              "dateFormat": "locale_short_month"
-            }
-          }
-        ],
-        "measures": [
-          {
-            "name": "order_count",
-            "expr": "COUNT(1)",
-            "displayName": "Order Count",
-            "format": {
-              "type": "number",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 0.0
-              }
-            }
-          },
-          {
-            "name": "total_order_value",
-            "expr": "SUM(o_totalprice)",
-            "displayName": "Total Order Value",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          },
-          {
-            "name": "avg_order_value",
-            "expr": "SUM(o_totalprice) / COUNT(1)",
-            "displayName": "Avg Order Value",
-            "format": {
-              "type": "currency",
-              "currencyCode": "USD",
-              "decimalPlaces": {
-                "type": "exact",
-                "places": 2.0
-              }
-            }
-          }
-        ]
-      }
     }
   ],
   "relationshipGraphs": [
     {
       "sources": [
-        {
-          "name": "Nations",
-          "datasetName": "nation"
-        },
-        {
-          "name": "Line_Items",
-          "datasetName": "lineitem"
-        },
         {
           "name": "Regions",
           "datasetName": "region"
@@ -513,12 +504,20 @@
           "datasetName": "customer"
         },
         {
-          "name": "Suppliers",
-          "datasetName": "supplier"
+          "name": "Nations",
+          "datasetName": "nation"
         },
         {
           "name": "Orders",
           "datasetName": "orders"
+        },
+        {
+          "name": "Suppliers",
+          "datasetName": "supplier"
+        },
+        {
+          "name": "Line_Items",
+          "datasetName": "lineitem"
         }
       ],
       "relationships": [
@@ -576,9 +575,515 @@
   ],
   "pages": [
     {
-      "name": "900ac464",
-      "displayName": "Overview",
+      "name": "0733af58",
+      "displayName": "Sales Overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "kpi_revenue",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "measure(Line_Items__total_revenue)",
+                      "expression": "MEASURE(`Line_Items`.`total_revenue`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Total Revenue"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(Line_Items__total_revenue)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_orders",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "measure(Orders__order_count)",
+                      "expression": "MEASURE(`Orders`.`order_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Total Orders"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(Orders__order_count)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "kpi_discount",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "measure(Line_Items__avg_discount)",
+                      "expression": "MEASURE(`Line_Items`.`avg_discount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Avg Discount %"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(Line_Items__avg_discount)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "revenue_by_segment",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Customers__c_mktsegment",
+                      "expression": "`Customers`.`c_mktsegment`"
+                    },
+                    {
+                      "name": "measure(Line_Items__total_revenue)",
+                      "expression": "MEASURE(`Line_Items`.`total_revenue`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue by Market Segment"
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Customers__c_mktsegment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(Line_Items__total_revenue)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Customers__c_mktsegment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "revenue_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Orders__order_month",
+                      "expression": "`Orders`.`order_month`"
+                    },
+                    {
+                      "name": "measure(Line_Items__total_revenue)",
+                      "expression": "MEASURE(`Line_Items`.`total_revenue`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue Trend by Month"
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "Orders__order_month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(Line_Items__total_revenue)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "revenue_by_nation",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Nations__n_name",
+                      "expression": "`Nations`.`n_name`"
+                    },
+                    {
+                      "name": "measure(Line_Items__total_revenue)",
+                      "expression": "MEASURE(`Line_Items`.`total_revenue`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Revenue by Nation"
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Nations__n_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(Line_Items__total_revenue)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Nations__n_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "customer_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Customers__c_name",
+                      "expression": "`Customers`.`c_name`"
+                    },
+                    {
+                      "name": "Nations__n_name",
+                      "expression": "`Nations`.`n_name`"
+                    },
+                    {
+                      "name": "Customers__c_mktsegment",
+                      "expression": "`Customers`.`c_mktsegment`"
+                    },
+                    {
+                      "name": "measure(Line_Items__total_revenue)",
+                      "expression": "MEASURE(`Line_Items`.`total_revenue`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Top Customers by Revenue"
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "Customers__c_name"
+                  },
+                  {
+                    "fieldName": "Nations__n_name"
+                  },
+                  {
+                    "fieldName": "Customers__c_mktsegment"
+                  },
+                  {
+                    "fieldName": "measure(Line_Items__total_revenue)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 7,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
       "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "global_filters",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "filter_region",
+            "queries": [
+              {
+                "name": "_Regions__r_name",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Regions__r_name",
+                      "expression": "`Regions`.`r_name`"
+                    },
+                    {
+                      "name": "Regions__r_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Region"
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Regions__r_name",
+                    "queryName": "_Regions__r_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 4,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_nation",
+            "queries": [
+              {
+                "name": "_Nations__n_name",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Nations__n_name",
+                      "expression": "`Nations`.`n_name`"
+                    },
+                    {
+                      "name": "Nations__n_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Nation"
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Nations__n_name",
+                    "queryName": "_Nations__n_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_date",
+            "queries": [
+              {
+                "name": "_Orders__o_orderdate",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Orders__o_orderdate",
+                      "expression": "`Orders`.`o_orderdate`"
+                    },
+                    {
+                      "name": "Orders__o_orderdate_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Order Date Range"
+              },
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "Orders__o_orderdate",
+                    "queryName": "_Orders__o_orderdate"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 4,
+            "height": 1
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
       "layoutVersion": "GRID_V1"
     }
   ],
